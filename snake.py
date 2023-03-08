@@ -49,4 +49,3 @@ class Snake:
     def right(self) -> None:
         if self.head.heading() != LEFT:
             self.head.setheading(RIGHT)
-        print("right")
