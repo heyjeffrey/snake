@@ -18,10 +18,6 @@ screen.onkeypress(snake.right, "Right")
 game_is_on = True
 while game_is_on:
     screen.update()  # only update when all segs are in right positions
-    '''
-    time.sleep(0.1)
-    snake.move()
-    '''
     snake.move()
     time.sleep(0.1)
 
