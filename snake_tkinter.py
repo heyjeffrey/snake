@@ -1,7 +1,6 @@
 from tkinter import *
 from random import randint
 from typing import Literal
-# from typing import *  # Literal, Any
 from PIL import Image, ImageTk
 from os import path
 
@@ -18,6 +17,12 @@ class Snake(Canvas):
             background='#53ff1a',
             highlightthickness=0
         )
+        self.start_game()
+
+    def start_game(self) -> None:
+
+        speed: Literal[110] = 1100 // steps_per_sec
+        movement: Literal[20] = 20
 
         self.snake_pos = [(100, 80), (80, 100), (80, 100)]
         self.food_pos = self.set_new_food_pos()
@@ -31,13 +36,12 @@ class Snake(Canvas):
         self.bind_all('<Key>', self.on_key_press)
 
         self.pack()
-
         self.after(speed, self.perform_actions)
 
     def load_img(self) -> None:
         try:
-            # filename = path.join("D:\Dev\Prj\Python\magics\snake\game.png", "game.png")
-            filename = "D:\Dev\Prj\Python\magics\snake\game.png"
+            filename: str = path.dirname(path.abspath(__file__))
+            filename = path.join(filename + path.sep + "game.png")
             self.snake_body: PhotoImage = ImageTk.PhotoImage(
                 Image.open(filename))
             self.food: PhotoImage = ImageTk.PhotoImage(Image.open(filename))
@@ -139,22 +143,28 @@ class Snake(Canvas):
     def on_key_press(self, e) -> None:
         new_direction = e.keysym
 
-        all_directions = (
-            'Up',
-            'Down',
-            'Left',
-            'Right'
-        )
-        opposites: tuple[set[str], set[str]] = (
-            {'Up', 'Down'},
-            {'Left', 'Right'}
-        )
+        if (new_direction == "space"):
+            #
+            self.delete(ALL)
+            self.start_game()
+        else:
 
-        if (
-            new_direction in all_directions
-            and {new_direction, self.direction} not in opposites
-        ):
-            self.direction = new_direction
+            all_directions = (
+                'Up',
+                'Down',
+                'Left',
+                'Right'
+            )
+            opposites: tuple[set[str], set[str]] = (
+                {'Up', 'Down'},
+                {'Left', 'Right'}
+            )
+
+            if (
+                new_direction in all_directions
+                and {new_direction, self.direction} not in opposites
+            ):
+                self.direction = new_direction
 
     def perform_actions(self) -> None:
         if self.boundry():
